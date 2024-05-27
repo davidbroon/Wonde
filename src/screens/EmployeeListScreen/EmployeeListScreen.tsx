@@ -1,10 +1,10 @@
-import { FlatList, View } from "react-native";
+import { ActivityIndicator, FlatList } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { SCHOOL_ID } from "../constants/constants";
+import { SCHOOL_ID } from "@/constants/constants";
 import { useGetEmployeesQuery } from "@/store";
 import ListItem from "@/components/ListItem";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "@/types/navigator";
+import { RootStackParamList } from "@/navigation";
 import StyledView from "@/components/StyledView";
 
 interface EmployeeListScreenProps {
@@ -12,7 +12,6 @@ interface EmployeeListScreenProps {
 }
 
 const EmployeeListScreen = ({ navigation }: EmployeeListScreenProps) => {
-	const insets = useSafeAreaInsets();
 	const { data, error, isLoading } = useGetEmployeesQuery(SCHOOL_ID);
 
 	const onPressHandler = (
@@ -22,6 +21,10 @@ const EmployeeListScreen = ({ navigation }: EmployeeListScreenProps) => {
 	) => {
 		navigation.navigate("ClassList", { employeeId, title, surname });
 	};
+
+	if (isLoading) {
+		return <ActivityIndicator />;
+	}
 
 	return (
 		<StyledView

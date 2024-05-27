@@ -1,14 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
-// Or from '@reduxjs/toolkit/query/react'
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { employeesApi } from "@/store/apis/employees";
 import { classApi } from "@/store/apis/classes";
 
+const rootReducer = combineReducers({
+	[employeesApi.reducerPath]: employeesApi.reducer,
+	[classApi.reducerPath]: classApi.reducer,
+});
+
 export const store = configureStore({
-	reducer: {
-		[employeesApi.reducerPath]: employeesApi.reducer,
-		[classApi.reducerPath]: classApi.reducer,
-	},
+	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware()
 			.concat(employeesApi.middleware)
